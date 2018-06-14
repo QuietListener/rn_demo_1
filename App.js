@@ -13,11 +13,16 @@ import {
   Button
 } from 'react-native';
 
-import {NativeModules} from "react-native"
+import {NativeModules,NativeEventEmitter} from "react-native"
 
 //在objective-c中使用"RCT_EXPORT_MODULE(MyNativeLibModule)"我们使用 MyNativeLibModule
 const MyNativeLibModule = NativeModules.MyNativeLibModule
 
+/**
+ * native主动于react-native通信
+ */
+const MyBatteryManager = NativeModules.MyBatteryManager
+const MyBatteryManagerEmitter = new NativeEventEmitter(MyBatteryManager);
 
 
 const instructions = Platform.select({
@@ -32,6 +37,21 @@ export default class App extends Component {
   constructor()
   {
     super();
+
+    //监听电池电量
+    this.subscription = MyBatteryManagerEmitter.addListener(
+      'EventBattery',
+      (data)=>{console.log("envent happend",data)}
+    );
+  }
+
+  //移除监听
+  componentWillUnmount()
+  {
+    if( this.subscription)
+    {
+      this.subscription.remove();
+    }
   }
 
   /*

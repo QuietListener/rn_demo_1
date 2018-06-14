@@ -10,18 +10,16 @@
 #import "React/RCTLog.h"
 #import <React/RCTConvert.h>
 
-#if __has_include("RCTBridgeModule.h")
-  #import "RCTBridgeModule.h"
-#else
-  #import <React/RCTBridgeModule.h>
-#endif
+#import <React/RCTEventEmitter.h>
+#import <React/RCTBridgeModule.h>
+
 
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
 
 //定义类
-@interface MyNativeLib : NSObject <RCTBridgeModule>
+@interface MyNativeLib : NSObject<RCTBridgeModule>
 
 @end
 
@@ -117,3 +115,39 @@ RCT_EXPORT_METHOD(getResponsePromise: (RCTPromiseResolveBlock)resolve  rejecter:
 @end
 
 
+
+/*
+ * native code 主动通知rn端的js代码
+ */
+@interface MyBatteryManager : RCTEventEmitter<RCTBridgeModule>
+@end
+
+@implementation MyBatteryManager
+
+-(instancetype)init {
+    self = [super init];
+  
+    NSLog(@"\n\n\n  NSNotificationCenter register  \n\n.");
+    return self;
+}
+
+//指定方法执行的队列
+//
+- (dispatch_queue_t)methodQueue
+{
+  return dispatch_get_main_queue();//指定为主线程(UI线程)
+}
+
+RCT_EXPORT_MODULE()
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"EventBattery"];
+}
+
+- (void)eventBatteryChanged
+{
+  NSString *eventName = @"EventBattery";
+  [self sendEventWithName:@"EventBattery" body:@{@"name": eventName,@"remained": @"10%"}];
+}
+@end
