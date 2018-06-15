@@ -135,7 +135,8 @@ RCT_EXPORT_METHOD(getAppVersionCallback:(RCTResponseSenderBlock)callback)
 }
 ```
 分析这个函数
-1.RCT_EXPORT_METHOD宏表示是要暴露给JS的方法。 2.getAppVersionCallback 中，有一个类型为RCTResponseSenderBlock的参数callback ，用于回调。它方法只接受一个数组作为参数。
+* 1.RCT_EXPORT_METHOD宏表示是要暴露给JS的方法。
+* 2.getAppVersionCallback 中，有一个类型为RCTResponseSenderBlock的参数callback ，用于回调。它方法只接受一个数组作为参数。
 
 
 ### 2 promise的方式获取结果
