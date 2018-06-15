@@ -1,5 +1,5 @@
 # rn_demo_1
-react-native 调用原生api的三种方式(ios篇)
+# react-native 调用原生api的三种方式(ios篇)
 
  做RN项目，常常需要访问一个原生系统的api又找不到相应的库，就需要自己写代码访问原生api。react-native提供了一个Bridge机制让javascript调用objective-c或者swift的原生方法。
 
