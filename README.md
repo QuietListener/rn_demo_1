@@ -92,7 +92,7 @@ MyNativeLibModule.getIMSIPromise()
 对于需求1,使用callback的方式实现。
 >1.获取app的版本
 
-在js端，假设使用方法下面的代码获取结果。
+##### 在js端，假设使用方法下面的代码获取结果。
  ```
 import {NativeModules,NativeEventEmitter} from "react-native"
 const MyNativeLibModule = NativeModules.MyNativeLibModule
@@ -118,7 +118,7 @@ Js端使用一个匿名回调函数来获取结果
 ```
 
 
-下面我们看看原生的Objective-c代码怎么写：
+##### 下面我们看看原生的Objective-c代码怎么写：
 ```
 RCT_EXPORT_METHOD(getAppVersionCallback:(RCTResponseSenderBlock)callback)
 {
@@ -137,11 +137,12 @@ RCT_EXPORT_METHOD(getAppVersionCallback:(RCTResponseSenderBlock)callback)
 分析这个函数
 1.RCT_EXPORT_METHOD宏表示是要暴露给JS的方法。 2.getAppVersionCallback 中，有一个类型为RCTResponseSenderBlock的参数callback ，用于回调。它方法只接受一个数组作为参数。
 
+
 ### 2 promise的方式获取结果
 使用callback是可行的，对于ES6 有了 promise，ES7有了async/await，我们也可以使用的。对于需求2使用promise来实现
 >2.获取IMSI码
 
-JS代码
+##### JS代码
 ```
 //使用promise
 MyNativeLibModule.getIMSIPromise().then(val => {
@@ -150,7 +151,7 @@ MyNativeLibModule.getIMSIPromise().then(val => {
  console.error(e);
 })
 ```
-Objective-c代码
+##### Objective-c代码
 ```RCTPromiseResolveBlock().then().catch()调用
  RCT_EXPORT_METHOD(getIMSIPromise: (RCTPromiseResolveBlock)resolve  rejecter:(RCTPromiseRejectBlock)reject    )
 {
@@ -166,13 +167,14 @@ Objective-c代码
 ```
 getIMSIPromise中提供的2个参数  rejecter，reject与JS仲的resolve和reject一一对应。
 
+
 ### 3 耗时的方法，放入queue仲去执行 
 上面两个例子耗时都很少，瞬间返回。有的方法很耗时，比如需求 
 >3.请求网络获取结果(假设很耗时需要3秒)。
 
 这时候我们需要执行一个异步逻辑。IOS中要执行的逻辑可以放到一个队列中去执行~
 
-JS端方法(同样使用promise的方式)
+#### JS端方法(同样使用promise的方式)
 ```
 MyNativeLibModule.getResponsePromise().then(val => {
     alert(`成功获取response(非常耗时):${val}`)
@@ -182,7 +184,7 @@ MyNativeLibModule.getResponsePromise().then(val => {
 
 ```
 
-native 端代码
+#### native 端代码
 ```
 //很耗时的方法,使用异步 ,在js中使用RCTPromiseResolveBlock().then().catch()调用
 RCT_EXPORT_METHOD(getResponsePromise: (RCTPromiseResolveBlock)resolve  rejecter:(RCTPromiseRejectBlock)reject    )
@@ -207,13 +209,13 @@ RCT_EXPORT_METHOD(getResponsePromise: (RCTPromiseResolveBlock)resolve  rejecter:
 ```
 
 #### 下面分析一下上面的代码
-1.获取IOS中默认的globalQueue，用于执行异步逻辑
+##### 1.获取IOS中默认的globalQueue，用于执行异步逻辑
  ```
 dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 ```
 
 
-2. dispatch_asyn将业务逻辑放到myQueue中，并且异步执行，业务逻辑是一个block，如下所示
+##### 2. dispatch_asyn将业务逻辑放到myQueue中，并且异步执行，业务逻辑是一个block，如下所示
 ```
  ^{
     @try {
