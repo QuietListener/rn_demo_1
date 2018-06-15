@@ -9,18 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "React/RCTLog.h"
 #import <React/RCTConvert.h>
-
 #import <React/RCTEventEmitter.h>
 #import <React/RCTBridgeModule.h>
 
-
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-
-
 //定义类
 @interface MyNativeLib : NSObject<RCTBridgeModule>
-
 @end
 
 
@@ -35,13 +28,10 @@ RCT_EXPORT_METHOD(getIMSIPromise: (RCTPromiseResolveBlock)resolve  rejecter:(RCT
 {
   NSString * imsi = nil;
   @try {
-    
     /**
-     ......
      获取imsi逻辑
-     ......
      */
-    
+  
     imsi = @"46000";
     resolve(imsi);
     
@@ -57,9 +47,7 @@ RCT_EXPORT_METHOD(getAppVersionCallback:(RCTResponseSenderBlock)callback)
   NSString * version = nil;
   @try {
     /**
-     ......
      获取vappersion逻辑
-     ......
      */
     
    version = @"1.0.5";
@@ -72,24 +60,17 @@ RCT_EXPORT_METHOD(getAppVersionCallback:(RCTResponseSenderBlock)callback)
 }
 
 
-//非常耗时的方法需要使用async的方式让一个线程去执行
 
-//指定方法执行的队列
+//指定默认方法执行的队列
 //
 - (dispatch_queue_t)methodQueue
 {
   return dispatch_get_main_queue();//指定为主线程(UI线程)
 }
 
-//很耗时的方法,使用异步 ,在js中使用RCTPromiseResolveBlock().then().catch()调用
+//非常耗时的方法需要使用async的方式让一个线程去异步执行,在js中使用RCTPromiseResolveBlock().then().catch()调用
 RCT_EXPORT_METHOD(getResponsePromise: (RCTPromiseResolveBlock)resolve  rejecter:(RCTPromiseRejectBlock)reject    )
 {
-    /**
-     ......
-     获取imsi逻辑
-     ......
-     */
-  
     //使用global_queue
     dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
   
@@ -107,9 +88,6 @@ RCT_EXPORT_METHOD(getResponsePromise: (RCTPromiseResolveBlock)resolve  rejecter:
          reject(@"", @"注册失败", nil);
        }
     });
-
-    
- 
 }
 
 @end
