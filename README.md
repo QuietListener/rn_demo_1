@@ -244,6 +244,7 @@ MyNativeLibModule.getResponsePromise().then().catch()
 
 
 
-
+# Native端的源代码在： https://github.com/QuietListener/rn_demo_1/blob/master/ios/rn_demo_1/myNativeLib.m(https://github.com/QuietListener/rn_demo_1/blob/master/ios/rn_demo_1/myNativeLib.m)
+# JS端的源代码在： https://github.com/QuietListener/rn_demo_1/blob/master/App.js(https://github.com/QuietListener/rn_demo_1/blob/master/App.js)
 
 
