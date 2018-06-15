@@ -5,7 +5,6 @@
 //  Created by junjun on 2018/6/14.
 //  Copyright © 2018年 Facebook. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "React/RCTLog.h"
 #import <React/RCTConvert.h>
@@ -15,7 +14,6 @@
 //定义类
 @interface MyNativeLib : NSObject<RCTBridgeModule>
 @end
-
 
 //类实现
 @implementation MyNativeLib
@@ -59,10 +57,7 @@ RCT_EXPORT_METHOD(getAppVersionCallback:(RCTResponseSenderBlock)callback)
   }
 }
 
-
-
 //指定默认方法执行的队列
-//
 - (dispatch_queue_t)methodQueue
 {
   return dispatch_get_main_queue();//指定为主线程(UI线程)
@@ -85,47 +80,9 @@ RCT_EXPORT_METHOD(getResponsePromise: (RCTPromiseResolveBlock)resolve  rejecter:
           resolve(response);
          
        } @catch (NSException *exception) {
-         reject(@"", @"注册失败", nil);
+         reject(@"", @"失败", nil);
        }
     });
 }
 
-@end
-
-
-
-/*
- * native code 主动通知rn端的js代码
- */
-@interface MyBatteryManager : RCTEventEmitter<RCTBridgeModule>
-@end
-
-@implementation MyBatteryManager
-
--(instancetype)init {
-    self = [super init];
-  
-    NSLog(@"\n\n\n  NSNotificationCenter register  \n\n.");
-    return self;
-}
-
-//指定方法执行的队列
-//
-- (dispatch_queue_t)methodQueue
-{
-  return dispatch_get_main_queue();//指定为主线程(UI线程)
-}
-
-RCT_EXPORT_MODULE()
-
-- (NSArray<NSString *> *)supportedEvents
-{
-  return @[@"EventBattery"];
-}
-
-- (void)eventBatteryChanged
-{
-  NSString *eventName = @"EventBattery";
-  [self sendEventWithName:@"EventBattery" body:@{@"name": eventName,@"remained": @"10%"}];
-}
 @end
